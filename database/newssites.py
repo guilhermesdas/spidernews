@@ -1,53 +1,57 @@
 import pymongo
 
+############### Database API ###############
+
 def getdb(url,name):
     client = pymongo.MongoClient(url)
     db = client[name]
     return db
 
 # add some collection from file
-def addcollection(db, colname, dataname):
-    # get all collection from file
-    pass
+def addcollection(db, colname, fieldname):
+    # get all data from file
+    with open(colname, "r") as file:
+        lines = [line.rstrip('\n') for line in file]
 
-# reset
+    # add each line to database
+    for line in lines:
+        js = { fieldname: line }
+        db[colname].insert_one(js)
+
+# reset given collection
 def resetcollection(db,colname):
     db[colname].delete_many({})
 
-# get all frontier links
-def getfrontiers(db):
-    # add all frontier to an list
-    frontier = []
-    cursor = db["frontier"].find({}).sort("url",1)
+# get data from database
+# colname: collection name
+# fieldname: field name from data to be addded in list
+def getdata(db,colname,fieldname):
+    data = []
+    cursor = db[colname].find({}).sort(fieldname,1)
     for doc in cursor:
-        frontier.append(doc["url"])
-    return frontier
+        data.append(doc[fieldname])
+    return data
 
-# get only one frontier
+# get only one frontier page from index
 def getfrontier(db,index):
-    # add all frontier to an list
+    # if there's no frontier, somethings wrong with database
+    if ( db["frontier"].count_documents({}) == 0 ):
+        return None
+
+    # return url frontier from given index
     cursor = db["frontier"].find({})
     return cursor[index]["url"]
 
-# get all frontier links
-def getkeywords(db):
-    # add all frontier to an list
-    keywords = []
-    cursor = db["keywords"].find({}).sort("keyword",1)
+# initialize frontier with seeds
+def initfrontier(db):
+    # get all links from seeds
+    cursor = db["seeds"].find({}).sort("seed",1)
     for doc in cursor:
-        keywords.append(doc["keyword"])
-    return keywords
+        # add to frontier
+        js = { "url": doc["seed"] }
+        db["frontier"].insert_one(js)
 
-# get all repository
-def getrepository(db):
-    # add all frontier to an list
-    repository = []
-    cursor = db["repository"].find({}).sort("baseurl",1)
-    for doc in cursor:
-        repository.append(doc)
-    return repository
-
-# insert
+# insert urls to frontier, without repetition
 def addfrontiers(db,urls):
     if not(db is None):
         for url in urls:
@@ -58,11 +62,32 @@ def addfrontiers(db,urls):
         print("Database error: null object")
 
 # insert links into repository
-# jss has baseurl, url, and list of keywords fields
-def addrepository(db,js):
+# js has baseurl, url, and list of keywords fields
+def addrepository(db,baseUrl,url,foundedkeywords):
     if not(db is None):
+        js = { "baseurl": baseUrl, "url": url, "keywords": foundedkeywords }
         url = { "url": js["url"] }
+        # insert only if there's no repetited urls
         if db["repository"].count_documents(url) == 0:
             db["repository"].insert_one(js)
     else:
         print("Database error: null object")
+
+# get all frontier links
+def getkeywords(db):
+    # add all frontier to an list
+    return getdata(db,"keywords","keyword")
+
+# get all repository
+def getrepository(db):
+    # add all frontier to an list
+    repository = []
+    cursor = db["repository"].find({}).sort("baseurl",1)
+    for doc in cursor:
+        repository.append(doc)
+    return repository
+
+# get all frontier links
+def getfrontiers(db):
+    # add all frontier to an list
+    return getdata(db,"frontier","url")

@@ -5,6 +5,18 @@ import json
 from LinkParser import LinkParser
 from database.newssites import *
 
+###########################################################
+
+# database
+dburl = "mongodb://localhost:27017/"
+dbname = "newssites"
+db = getdb(dburl,dbname)
+
+################ FUNCTIONS #################
+
+
+############ PARSERS ###############
+
 # parser url, returning html page and list of hyperlinks
 def parserURL(baseUrl,url):
 
@@ -31,14 +43,9 @@ def parserHTML(keywords,html):
 
     return foundedkeywords
 
-###########################################################
+############ SPIDER ###############
 
-# database
-dburl = "mongodb://localhost:27017/"
-dbname = "newssites"
-db = getdb(dburl,dbname)
-
-# recursive function
+# recursive function to parse html
 def spider(baseUrl, index, max):
 
     # current url from frontier
@@ -56,8 +63,7 @@ def spider(baseUrl, index, max):
     # parser one html and add to repository if keyword was founded
     foundedkeywords = parserHTML(getkeywords(db),html)
     if ( len(foundedkeywords) > 0 ):
-        js = { "baseurl": baseUrl, "url": url, "keywords": foundedkeywords }
-        addrepository(db,js)
+        addrepository(db,baseUrl,url,foundedkeywords)
 
     # next url
     index = index + 1
@@ -66,10 +72,13 @@ def spider(baseUrl, index, max):
     # see if repository has changed
     # print("repository len: ",len(getrepository(db)))
 
+##################################### RUN #####################################
+
 # run spider
+resetcollection(db,"frontier")
+resetcollection(db,"repository")
+initfrontier(db)
 spider("http://portaldoholanda.com.br/",0,10)
-#resetcollection(db,"frontier")
-#resetcollection(db,"repository")
 frontiers = getfrontiers(db)
 print(frontiers, len(frontiers))
 input()
