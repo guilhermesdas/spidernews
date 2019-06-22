@@ -15,13 +15,19 @@ def resetcollection(db,colname):
     db[colname].delete_many({})
 
 # get all frontier links
-def getfrontier(db):
+def getfrontiers(db):
     # add all frontier to an list
     frontier = []
     cursor = db["frontier"].find({}).sort("url",1)
     for doc in cursor:
         frontier.append(doc["url"])
     return frontier
+
+# get only one frontier
+def getfrontier(db,index):
+    # add all frontier to an list
+    cursor = db["frontier"].find({})
+    return cursor[index]["url"]
 
 # get all frontier links
 def getkeywords(db):
