@@ -3,7 +3,7 @@ from urllib.request import urlopen
 from urllib import parse
 import json
 from LinkParser import LinkParser
-from database.newssites import getdb
+from database.newssites import *
 
 # parser url, returning html page and list of hyperlinks
 def parser(url,baseUrl):
@@ -21,9 +21,11 @@ def parser(url,baseUrl):
 def addfrontiers(db,links):
     if not(db is None):
         for link in links:
-            js = {"link": link}
+            js = {"url": link}
             if not((db)["frontier"].find(js)):
                 db["frontier"].insert_one(js)
+    else:
+        print("Database error: null object")
 
 ###########################################################
 
@@ -37,5 +39,8 @@ db = getdb(dburl,dbname)
 
 # parser one html
 html, links = parser(baseUrl,baseUrl)
-print(html)
 print(links)
+addfrontiers(db,links)
+
+# see if frontier has changed
+print(getfrontier(db))
