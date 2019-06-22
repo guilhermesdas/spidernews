@@ -5,6 +5,18 @@ import json
 from LinkParser import LinkParser
 from database.newssites import *
 
+###########################################################
+
+# database
+dburl = "mongodb://localhost:27017/"
+dbname = "newssites"
+db = getdb(dburl,dbname)
+
+################ FUNCTIONS #################
+
+
+############ PARSERS ###############
+
 # parser url, returning html page and list of hyperlinks
 def parserURL(baseUrl,url):
 
@@ -31,28 +43,45 @@ def parserHTML(keywords,html):
 
     return foundedkeywords
 
-###########################################################
+############ SPIDER ###############
 
-# consts
-baseUrl = 'http://portaldoholanda.com.br/'
-url = "https://www.portaldoholanda.com.br/noticia-hoje/curso-de-cuidador-de-idoso-tem-pre-inscricoes-abertas-nesta-segunda-feira-em-manaus"
-dburl = "mongodb://localhost:27017/"
-dbname = "newssites"
+# recursive function to parse html
+def spider(baseUrl, index, max):
 
-# database
-db = getdb(dburl,dbname)
+    # current url from frontier
+    if ( index < max ):
+        url = getfrontier(db,index)
+    else:
+        return
 
-# parser one url
-html, links = parserURL(baseUrl,url)
-# print(links)
-addfrontiers(db,links)
-# see if frontier has changed
-print("frontier len:",len(getfrontier(db)))
+    # parser one url and add new founded links to database
+    html, links = parserURL(baseUrl,url)
+    addfrontiers(db,links)
+    # see if frontier has changed
+    # print("frontier len:",len(getfrontiers(db)))
 
-# parser one html and add to repository if found keyword
-foundedkeywords = parserHTML(getkeywords(db),html)
-if ( len(foundedkeywords) > 0 ):
-    js = { "baseurl": baseUrl, "url": url, "keywords": foundedkeywords }
-    addrepository(db,js)
-# see if repository has changed
-print("repository len: ",len(getrepository(db)))
+    # parser one html and add to repository if keyword was founded
+    foundedkeywords = parserHTML(getkeywords(db),html)
+    if ( len(foundedkeywords) > 0 ):
+        addrepository(db,baseUrl,url,foundedkeywords)
+
+    # next url
+    index = index + 1
+    spider(baseUrl,index,max)
+
+    # see if repository has changed
+    # print("repository len: ",len(getrepository(db)))
+
+##################################### RUN #####################################
+
+# run spider
+resetcollection(db,"frontier")
+resetcollection(db,"repository")
+initfrontier(db)
+spider("http://portaldoholanda.com.br/",0,10)
+frontiers = getfrontiers(db)
+print(frontiers, len(frontiers))
+input()
+repository = getrepository(db)
+print(repository,len(repository))
+input()
