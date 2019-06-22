@@ -17,15 +17,6 @@ def parser(url,baseUrl):
     parser.feed(htmlString)
     return htmlString, parser.links
 
-# insert
-def addfrontiers(db,links):
-    if not(db is None):
-        for link in links:
-            js = {"url": link}
-            if not((db)["frontier"].find(js)):
-                db["frontier"].insert_one(js)
-    else:
-        print("Database error: null object")
 
 ###########################################################
 
@@ -39,8 +30,8 @@ db = getdb(dburl,dbname)
 
 # parser one html
 html, links = parser(baseUrl,baseUrl)
-print(links)
+# print(links)
 addfrontiers(db,links)
 
 # see if frontier has changed
-print(getfrontier(db))
+print(len(getfrontier(db)))
