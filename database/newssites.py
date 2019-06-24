@@ -34,8 +34,10 @@ def getdata(db,colname,fieldname):
 
 # get only one frontier page from index
 def getfrontier(db,index):
+    
     # if there's no frontier, somethings wrong with database
-    if ( db["frontier"].count_documents({}) == 0 ):
+    nfrontier = db["frontier"].count_documents({})
+    if ( nfrontier == 0 or index >= nfrontier  ):
         return None
 
     # return url frontier from given index
@@ -44,6 +46,7 @@ def getfrontier(db,index):
 
 # initialize frontier with seeds
 def initfrontier(db):
+    resetcollection(db,"frontier")
     # get all links from seeds
     cursor = db["seeds"].find({}).sort("seed",1)
     for doc in cursor:
@@ -91,3 +94,7 @@ def getrepository(db):
 def getfrontiers(db):
     # add all frontier to an list
     return getdata(db,"frontier","url")
+
+#
+def getseeds(db):
+    return getdata(db,"seeds","seed")
