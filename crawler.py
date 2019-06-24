@@ -2,6 +2,7 @@ from html.parser import HTMLParser
 from urllib.request import urlopen  
 from urllib import parse
 import json
+import requests
 from LinkParser import LinkParser
 from database.newssites import *
 
@@ -21,9 +22,13 @@ db = getdb(dburl,dbname)
 def parserURL(baseUrl,url):
 
     # get html
-    htmlBytes = urlopen(url).read()
-    htmlString = htmlBytes.decode("utf-8")
-
+    header = {
+    "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.75 Safari/537.36",
+    "X-Requested-With": "XMLHttpRequest"
+    }
+    r = requests.get(url, headers=header)
+    htmlString =  r.text
+    
     # parser for links
     parser = LinkParser()
     parser.baseUrl = baseUrl
@@ -46,12 +51,11 @@ def parserHTML(keywords,html):
 ############ SPIDER ###############
 
 # recursive function to parse html
-def spider(baseUrl, index, max):
+def spider(baseUrl, index):
 
     # current url from frontier
-    if ( index < max ):
-        url = getfrontier(db,index)
-    else:
+    url = getfrontier(db,index)
+    if url is None:
         return
 
     # parser one url and add new founded links to database
@@ -67,21 +71,8 @@ def spider(baseUrl, index, max):
 
     # next url
     index = index + 1
-    spider(baseUrl,index,max)
+    spider(baseUrl,index)
 
     # see if repository has changed
-    # print("repository len: ",len(getrepository(db)))
-
-##################################### RUN #####################################
-
-# run spider
-resetcollection(db,"frontier")
-resetcollection(db,"repository")
-initfrontier(db)
-spider("http://portaldoholanda.com.br/",0,10)
-frontiers = getfrontiers(db)
-print(frontiers, len(frontiers))
-input()
-repository = getrepository(db)
-print(repository,len(repository))
-input()
+    #repository = getrepository(db)
+    #print("Repository:",repository,len(repository))
