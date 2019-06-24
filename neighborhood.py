@@ -7,7 +7,7 @@ URL = "http://maps.googleapis.com/maps/api/geocode/json"
 location = "https://places-dsn.algolia.net/1/places/query"
   
 # defining a params dict for the parameters to be sent to the API 
-PARAMS = {"query": "Manaus alvorada","countries": ["br"],"language":"pt"}
+PARAMS = {"query": "Manaus alvorada","countries": ["br"],"language":"pt","type": "address"}
   
 # sending get request and saving the response as response object 
 r = requests.get(url = URL, params = PARAMS) 

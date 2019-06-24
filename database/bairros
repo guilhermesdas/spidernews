@@ -1,23 +1,2 @@
-{'neighborhood': 'Centro', 'lat': -3.1316333, 'long': -59.9825041}
-{'neighborhood': 'Nossa Senhora Aparecida', 'lat': -3.1316333, 'long': -59.9825041}
-{'neighborhood': 'Presidente Vargas', 'lat': -3.1316333, 'long': -59.9825041}
-{'neighborhood': 'Praça 14 de Janeiro', 'lat': -3.1316333, 'long': -59.9825041}
-{'neighborhood': 'Cachoeirinha', 'lat': -3.1316333, 'long': -59.9825041}
-{'neighborhood': 'São Raimundo', 'lat': -3.1316333, 'long': -59.9825041}
-{'neighborhood': 'Glória', 'lat': -3.1316333, 'long': -59.9825041}
-{'neighborhood': 'Santo Antônio', 'lat': -3.1316333, 'long': -59.9825041}
-{'neighborhood': 'Vila da Prata', 'lat': -3.1316333, 'long': -59.9825041}
-{'neighborhood': 'Compensa', 'lat': -3.1316333, 'long': -59.9825041}
-{'neighborhood': 'São Jorge', 'lat': -3.1316333, 'long': -59.9825041}
-{'neighborhood': 'Santo Agostinho', 'lat': -3.1316333, 'long': -59.9825041}
-{'neighborhood': 'Nova Esperança', 'lat': -3.1316333, 'long': -59.9825041}
-{'neighborhood': 'Lírio do Vale', 'lat': -3.1316333, 'long': -59.9825041}
-{'neighborhood': 'Planalto', 'lat':     , 'long': -59.9825041}
-{'neighborhood': 'Alvorada', 'lat': -3.1316333, 'long': -59.9825041}
-{'neighborhood': 'Redenção', 'lat': -3.1316333, 'long': -59.9825041}
-{'neighborhood': 'Da Paz', 'lat': -3.1316333, 'long': -59.9825041}
-{'neighborhood': 'Raiz', 'lat': -3.1316333, 'long': -59.9825041}
-{'neighborhood': 'São Francisco', 'lat': -3.1316333, 'long': -59.9825041}
-{'neighborhood': 'Petrópolis', 'lat': -3.1316333, 'long': -59.9825041}
-{'neighborhood': 'Japiim', 'lat': -3.1316333, 'long': -59.9825041}
-{'neighborhood': 'Coroado', 'lat': -3.1316333, 'long': -59.9825041}
+{"hits":[{"country":"Brasil","is_country":false,"city":["Manaus"],"is_highway":true,"importance":26,"_tags":["highway","highway/service","country/br","address","highway/unclassified","source/osm"],"postcode":["69000-000"],"county":["Microrregião de Manaus"],"population":1982179,"country_code":"br","is_city":false,"is_popular":false,"administrative":["Amazonas","Mesorregião Centro Amazonense"],"admin_level":15,"suburb":["Coroado"],"village":["Manaus"],"is_suburb":false,"locale_names":["Via de Acesso a UFAM"],"_geoloc":{"lat":-3.1013,"lng":-59.9828},"objectID":"131282651_230379260","_highlightResult":{"country":{"value":"Brasil","matchLevel":"none","matchedWords":[]},"city":[{"value":"<em>Manaus</em>","matchLevel":"partial","fullyHighlighted":true,"matchedWords":["manaus"]}],"postcode":[{"value":"69000-000","matchLevel":"none","matchedWords":[]}],"county":[{"value":"Microrregião de <em>Manaus</em>","matchLevel":"partial","fullyHighlighted":false,"matchedWords":["manaus"]}],"administrative":[{"value":"Amazonas","matchLevel":"none","matchedWords":[]},{"value":"Mesorregião Centro Amazonense","matchLevel":"none","matchedWords":[]}],"suburb":[{"value":"Coroado","matchLevel":"none","matchedWords":[]}],"village":[{"value":"<em>Manaus</em>","matchLevel":"partial","fullyHighlighted":true,"matchedWords":["manaus"]}],"locale_names":[{"value":"Via de Acesso a <em>UFAM</em>","matchLevel":"partial","fullyHighlighted":false,"matchedWords":["ufam"]}]}}],"nbHits":1,"processingTimeMS":2,"query":"Manaus ufam","params":"query=Manaus+ufam&hitsPerPage=1&countries=%5B%22br%22%5D&language=pt&type=address","degradedQuery":false}
+neighborhood

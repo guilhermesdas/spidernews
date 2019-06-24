@@ -1,13 +1,6 @@
-from geopy.geocoders import Nominatim
 import json
-import time
 
-with open("neighborhood", "r") as file:
-    lines = [line.rstrip('\n') for line in file]
+with open("bairros", "r") as json_file:
+    data = json.load(json_file)
 
-for line in lines:
-    geolocator = Nominatim()
-    location = geolocator.geocode("Manaus",line)
-    js = { "neighborhood": line, "lat": location.latitude, "long": location.longitude }
-    print(js)
-    time.sleep(2)
+print(data["hits"][0]["_geoloc"])
